@@ -143,6 +143,7 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
+
   return 2;
 }
 /* 
@@ -153,7 +154,7 @@ int bitXor(int x, int y) {
  */
 int tmin(void) {
 
-  return 2;
+  return 1<<31;
 
 }
 //2
@@ -215,12 +216,7 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-    // how can i check if x is 0 or not
-    x = !x;
 
-    // 0의 보수를 이용한다.
-    // 0의 보수를 이용한 다음에
-    return (~x & y) | (x & z);
 }
 
 /* 
@@ -231,7 +227,12 @@ int conditional(int x, int y, int z) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+    int checkY = (y >> 31) & 0x1;
+    int checkX = (x >> 31) & 0x1;
+    x = ~x + 1; //x의 2의 보수
+        y = y + x; // 이건 y-x. 얘가 음수면 return 0. 음수면 맨 앞의 비트가 켜져 있음. 0이거나 양수면 안켜져 있음
+    // 그냥 y값만 체크할 경우에는 오버플로우가 발생해서 틀릴 수 있음. 부호가 같은 경우에 + 부호가 만약 다른경우에 X가 음이고, Y가 양인 것으로
+  return ((!((y >> 31) & 0x1)) & !(checkX ^ checkY)) | (checkX & !checkY);
 }
 //4
 /* 
@@ -243,7 +244,10 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
-  return 2;
+
+    // 딴애들은 자신의 2의 보수와 합집합을 했을때 가장 앞의 비트가 무조건 켜진다. 하지만 0은 2의 보수도 0이기 때문에 켜지지 않음
+    // 그러니까 합집합으로 맨 앞에 비트를 만들고 -> 그걸 쭉 뒤로 당겨서 0x1과 &로 맞춰주고 -> 마지막으로 0x1과 Xor을 해주면 Neg가 나온다.
+    return ((((~x+1) | x) >> 31) & 0x1) ^ 0x1;
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
