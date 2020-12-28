@@ -272,8 +272,14 @@ int howManyBits(int x) {
  *   Max ops: 30
  *   Rating: 4
  */
+// Denormalized 개념은 꼭 한번 더 복습할 것!
+// 처음에는 단순히 uf의 지부수에 1을 더해주면 된다고 생각
+// INF를 표현해 줘야하고 Denormalized를 표현해 줘야한다.
+// 결국 지수부가 -126 ~ 127을 표현하는 이유는 128은 INF를 표현하고, -127은 이런 Denormalized된 수를 표현해서 주어진 비트 내에서 표현할 수 없는 범위도 표현하게 하기 위해서이다.
 unsigned floatScale2(unsigned uf) {
-  return 2;
+    if(((0x7F8 << 20) & uf) == 0x7F8 << 20) return uf;
+    else if(((0x7F8 << 20) & uf) == 0) return ((1 << 31) & uf) | (uf << 1);
+    else return uf + (0x008 << 20);
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
