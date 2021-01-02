@@ -7,8 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3e257f4d-55e4-45b8-817e-13372c0ba683" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datalab-handout/bits.c" beforeDir="false" afterPath="$PROJECT_DIR$/datalab-handout/bits.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datalab-handout/btest" beforeDir="false" afterPath="$PROJECT_DIR$/datalab-handout/btest" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datalab-handout/fshow" beforeDir="false" afterPath="$PROJECT_DIR$/datalab-handout/fshow" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datalab-handout/ishow" beforeDir="false" afterPath="$PROJECT_DIR$/datalab-handout/ishow" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +46,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1609165815423</updated>
-      <workItem from="1609165820510" duration="1872000" />
+      <workItem from="1609165820510" duration="2558000" />
+      <workItem from="1609328569132" duration="2000" />
+      <workItem from="1609569064039" duration="8590000" />
     </task>
     <servers />
   </component>

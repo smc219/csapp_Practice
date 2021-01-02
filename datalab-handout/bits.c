@@ -166,9 +166,11 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  return 2;
+    // 맨 앞의 1을 제외하고는 전부 켜져있어야함. 그러면 1 << 31 + x를 해준 다음에 반전 시킨걸 ! 시켜준다.
+    return !(~(1 << 31 | x)) &
+           !((1 << 31) & x); // 뒤의 것은 맨앞의 비트가 켜져있는지 확인해준다. &로 해서 켜져있으면 0이 나올테니 0이 될거고, 꺼져있으면 0이 나올테니 1이 될 것
 }
-/* 
+    /*
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
  *   where bits are numbered from 0 (least significant) to 31 (most significant)
  *   Examples allOddBits(0xFFFFFFFD) = 0, allOddBits(0xAAAAAAAA) = 1
@@ -177,7 +179,10 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+  int odd = 0xAAAAAAAA;
+  int even = 0xFFFFFFFF ^ odd;
+  x = x & odd;
+  return !(x^odd);
 }
 /* 
  * negate - return -x 
@@ -216,7 +221,8 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-
+    int isZero = ((~x + 1) | x) >> 31;
+    return (isZero & y) | (~isZero & z);
 }
 
 /* 
@@ -297,8 +303,32 @@ unsigned floatScale2(unsigned uf) {
  *   Max ops: 30
  *   Rating: 4
  */
+// Normalized;
+// Denormalized;
+// NAN / INF;
 int floatFloat2Int(unsigned uf) {
-  return 2;
+    int sign = uf & (1 << 31);
+    unsigned int exp = ( (uf >> 23) & 0xff);
+    uf = uf & 0x007fffff;
+    // NAN or INF
+    if (exp >= 128) return 0x80000000u;
+    else if (exp >= 127) // Normalized;
+    {
+        // exp -127 한 애만큼만 살려주는 것.
+        if (sign)
+        {
+            return ~((1 << (exp - 127)) | (uf >> (23 - exp + 127))) + 1;
+        }
+        else
+        {
+            return (1 << (exp - 127)) | (uf >> (23 - exp + 127));
+        }
+
+    }
+    else if (exp < 127)
+    {
+        return 0;
+    }
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
